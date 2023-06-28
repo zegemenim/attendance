@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', 'HomeController@index')->name('reports');
+
+Route::middleware(['auth', 'teacher'])->group(function () {
+
     Route::get('/prayer-attendance/{floor?}', 'AttendanceController@prayer')->name('attendance.prayer');
     Route::post('/prayer-attendance/{floor?}', 'AttendanceController@prayer')->name('attendance.prayer.post');
     Route::get('/study-attendance/{study_room?}', 'AttendanceController@study')->name('attendance.study');
@@ -25,5 +26,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/sleep-attendance/{floor?}/{room?}', 'AttendanceController@sleep')->name('attendance.sleep.post');
 });
 
+Route::group([], function () {
+    Route::get('/admin/', 'AdminController@index')->name('admin');
+})->middleware([auth::class, \App\Http\Middleware\AdminMiddleware::class]);
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/', 'HomeController@index')->name('reports');
+    Route::get('/prayer', 'HomeController@index')->name('reports.prayer');
+    Route::get('/study', 'HomeController@index')->name('reports.study');
+    Route::get('/sleep', 'HomeController@index')->name('reports.sleep');
+    Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+});
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

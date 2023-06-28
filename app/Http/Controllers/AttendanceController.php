@@ -25,10 +25,10 @@ class AttendanceController extends Controller
 
         if ($request->isMethod('post') && $request->user_id) {
             foreach ($request->user_id as $user_id) {
-                $user = User::find($user_id);
                 $attendance = new Attendance();
                 $attendance->user_id = $user_id;
                 $attendance->attendance_type = "prayer";
+                $attendance->prayer_type = $request->prayer_type;
                 $attendance->save();
             }
         }

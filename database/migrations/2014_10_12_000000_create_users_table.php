@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default("Bilinmiyor");
-            $table->string('username');
+            $table->string('username')->comment("TC Kimlik No");
             $table->string('room')->nullable();
             $table->string('floor_id')->nullable();
             $table->string('study_room')->nullable();
+            $table->integer('rank')->default(300)->comment("300->Öğrenci, 200->Öğretmen, 100->Yönetim, 0->Admin");
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

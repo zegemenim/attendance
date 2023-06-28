@@ -1,7 +1,7 @@
 @php
     $url = url('/');
 @endphp
-<!doctype html>
+    <!doctype html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,10 @@
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>Hoş geldin!</title>
     <link href="{{asset("css/app.css")}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body class="min-h-screen">
 <header class="shadow-md border-gray-500 border-b-2 w-full">
@@ -25,15 +29,27 @@
                     <ul class="flex mx-4 justify-center items-center">
                         <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
                                 href="{{URL::to("/")}}/">Raporlar</a></li>
-        <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                href="{{URL::to("/")}}/prayer-attendance">Namaz Yoklaması</a></li>
-        <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                href="{{URL::to("/")}}/study-attendance">Etüt Yoklaması</a></li>
-        <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                href="{{URL::to("/")}}/sleep-attendance">Yat Yoklaması</a></li>
-        <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                href="{{URL::to("/")}}/logout">Çıkış</a></li>
+                        @if(auth()->user()->rank == 200 || auth()->user()->rank == 100 || auth()->user()->rank == 0)
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{URL::to("/")}}/prayer-attendance">Namaz Yoklaması</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{URL::to("/")}}/study-attendance">Etüt Yoklaması</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{URL::to("/")}}/sleep-attendance">Yat Yoklaması</a></li>
+                        @endif
+                        @if(auth()->user()->rank == 100 || auth()->user()->rank == 0)
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{route("admin")}}    ">Yönetici</a></li>
+                        @endif
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><button
+                                    type="submit">Çıkış</button></li>
+                            </form>
         </ul>
+
+
+
                 </span>
     </div>
 </header>
