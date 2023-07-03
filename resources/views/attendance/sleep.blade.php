@@ -40,7 +40,7 @@
                 @foreach($users as $user)
                     <label for="{{$user->id}}"
                            class="h-16 w-full bg-slate-200 shadow-lg rounded-xl flex items-center justify-center">
-                        <input type="checkbox" name="user_id[]" value="{{$user->id}}"
+                        <input type="checkbox" name="user_id[]" @if($user->attendance) checked @endif value="{{$user->id}}"
                                class="form-checkbox h-5 w-5 text-blue-500" id="{{$user->id}}">
                         <span>{{$user->name}}</span>
                     </label>

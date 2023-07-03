@@ -27,19 +27,20 @@
         </a>
         <span class="flex">
                     <ul class="flex mx-4 justify-center items-center">
-                        <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                href="{{URL::to("/")}}/">Raporlar</a></li>
-                        @if(auth()->user()->rank == 200 || auth()->user()->rank == 100 || auth()->user()->rank == 0)
+                        @if(auth()->user()->rank == 0 || auth()->user()->rank == 100)
+
                             <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{URL::to("/")}}/prayer-attendance">Namaz Yoklaması</a></li>
+                                    href="{{route("admin.home")}}/">Raporlar</a></li>
                             <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{URL::to("/")}}/study-attendance">Etüt Yoklaması</a></li>
+                                    href="{{route("admin.users")}}/">Öğrenciler</a></li>
                             <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{URL::to("/")}}/sleep-attendance">Yat Yoklaması</a></li>
-                        @endif
-                        @if(auth()->user()->rank == 100 || auth()->user()->rank == 0)
+                                    href="{{route("admin.home")}}/">Katlar</a></li>
                             <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{route("admin.home")}}    ">Yönetici</a></li>
+                                    href="{{route("admin.home")}}/">Odalar</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{route("admin.home")}}/">Çalışma Odaları</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                                    href="{{route("admin.home")}}/">Ayarlar</a></li>
                         @endif
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf
