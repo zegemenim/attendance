@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('study_room')->nullable();
             $table->integer('rank')->default(300)->comment("300->Öğrenci, 200->Öğretmen, 100->Yönetim, 0->Admin");
             $table->string('password');
+            $table->string('open_password');
             $table->rememberToken();
             $table->timestamps();
         });

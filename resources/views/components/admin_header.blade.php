@@ -18,7 +18,7 @@
 
 </head>
 <body class="min-h-screen">
-<header class="shadow-md border-gray-500 border-b-2 w-full">
+<header class="shadow-md border-gray-500 border-b-2 w-full mb-2">
     <div class="flex mx-4 my-2 justify-between ">
         <a href="{{URL::to("/")}}/">
                 <span class="flex text-center justify-center items-center ">
@@ -29,18 +29,18 @@
                     <ul class="flex mx-4 justify-center items-center">
                         @if(auth()->user()->rank == 0 || auth()->user()->rank == 100)
 
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.home")) text-blue-800 @endif"><a
                                     href="{{route("admin.home")}}/">Raporlar</a></li>
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.users")) text-blue-800 @endif"><a
                                     href="{{route("admin.users")}}/">Öğrenciler</a></li>
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{route("admin.home")}}/">Katlar</a></li>
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{route("admin.home")}}/">Odalar</a></li>
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{route("admin.home")}}/">Çalışma Odaları</a></li>
-                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left"><a
-                                    href="{{route("admin.home")}}/">Ayarlar</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.floors")) text-blue-800 @endif"><a
+                                    href="{{route("admin.floors")}}/">Katlar</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.rooms")) text-blue-800 @endif"><a
+                                    href="{{route("admin.rooms")}}/">Odalar</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.study_rooms")) text-blue-800 @endif"><a
+                                    href="{{route("admin.study_rooms")}}/">Çalışma Odaları</a></li>
+                            <li class="mx-2 text-xs md:mx-8 hover:text-blue-600 md:text-xl text-center md:text-left @if(url()->full() == route("admin.settings")) text-blue-800 @endif"><a
+                                    href="{{route("admin.settings")}}/">Ayarlar</a></li>
                         @endif
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf

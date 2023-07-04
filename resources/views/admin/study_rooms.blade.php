@@ -1,32 +1,20 @@
 @include("components.admin_header")
-<a href="{{route("admin.add_user")}}" class="bg-gray-50 shadow-lg border-2 border-blue-900 rounded-md p-1 hover:bg-blue-500 mx-2 mt-4 hover:text-white">Yeni Kullanıcı</a>
+<a href="{{route("admin.add_study_room")}}" class="bg-gray-50 shadow-lg border-2 border-blue-900 rounded-md p-1 hover:bg-blue-500 mx-2 mt-4 hover:text-white">Yeni Çalışma Odası</a>
 <main class="h-auto text-center w-full rounded-md p-4 bg-gray-50">
     <table id="myTable" class="text-center hover">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Adı Soyadı</th>
-            <th>T.C. Kimlik No.</th>
-            <th>Oda</th>
-            <th>Kat</th>
-            <th>Çalışma Odası</th>
-            <th>Seviye</th>
+            <th>Oda Numarası</th>
             <th class="">Düzenle</th>
             <th class="">Sil</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($study_rooms as $study_room)
             <tr>
-                <td class="">{{$user->id}}</td>
-                <td class="">{{$user->name}}</td>
-                <td class="">{{$user->username}}</td>
-                <td class="">{{$user->room}}</td>
-                <td class="">{{$user->floor_id}}</td>
-                <td class="">{{$user->study_room}}</td>
-                <td class="">@if($user->rank == 300) Öğrenci @endif @if($user->rank == 200) Öğretmen @endif @if($user->rank == 100) Yönetici @endif @if($user->rank == 0) Geliştirici @endif</td>
-                <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.edit_user")}}/{{$user->id}}">Düzenle</a></td>
-                <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.delete_user")}}/{{$user->id}}" onclick="alert('{{$user->name}} isimli kullanıcıyı silmek istediğine emin misin?')">Sil</a></td>
+                <td class="">{{$study_room->id}}</td>
+                <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.edit_study_room")}}/{{$study_room->id}}">Düzenle</a></td>
+                <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.delete_study_room")}}/{{$study_room->id}}" onclick="alert('{{$study_room->id}} numaralı odayı silmek istediğine emin misin?')">Sil</a></td>
             </tr>
         @endforeach
         </tbody>
