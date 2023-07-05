@@ -11,6 +11,7 @@
             <th>Kat</th>
             <th>Çalışma Odası</th>
             <th>Seviye</th>
+            <th>Raporu İncele</th>
             <th class="">Düzenle</th>
             <th class="">Sil</th>
         </tr>
@@ -22,9 +23,10 @@
                 <td class="">{{$user->name}}</td>
                 <td class="">{{$user->username}}</td>
                 <td class="">{{$user->room}}</td>
-                <td class="">{{$user->floor_id}}</td>
+                <td class="">{{\App\Models\Room::where("id", $user->room)->first()->floor_id}}</td>
                 <td class="">{{$user->study_room}}</td>
                 <td class="">@if($user->rank == 300) Öğrenci @endif @if($user->rank == 200) Öğretmen @endif @if($user->rank == 100) Yönetici @endif @if($user->rank == 0) Geliştirici @endif</td>
+                <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.home")}}?user_id={{$user->id}}">Raporu İncele</a></td>
                 <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.edit_user")}}/{{$user->id}}">Düzenle</a></td>
                 <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.delete_user")}}/{{$user->id}}" onclick="alert('{{$user->name}} isimli kullanıcıyı silmek istediğine emin misin?')">Sil</a></td>
             </tr>

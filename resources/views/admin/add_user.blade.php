@@ -20,15 +20,9 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="room">Oda</label>
-                <input name="room"
+                <input name="room" required
                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                        id="room" type="text" placeholder="Oda">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="floor">Kat</label>
-                <input name="floor"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="floor" type="text" placeholder="Kat">
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="study_room">Çalışma Odası</label>
@@ -45,7 +39,7 @@
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="rank">Seviye</label>
                 {{--                <input value="{{$user->study_room}}" name="study_room" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="study_room" type="text" placeholder="Çalışma Odası">--}}
-                <select name="rank" id="rank"
+                <select required name="rank" id="rank"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     @php
                         $ranks = [
