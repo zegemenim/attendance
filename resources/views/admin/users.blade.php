@@ -23,7 +23,7 @@
                 <td class="">{{$user->name}}</td>
                 <td class="">{{$user->username}}</td>
                 <td class="">{{$user->room}}</td>
-                <td class="">{{\App\Models\Room::where("id", $user->room)->first()->floor_id}}</td>
+                <td class="">@if(isset(\App\Models\Room::where("id", $user->room)->first()->floor_id)){{\App\Models\Room::where("id", $user->room)->first()->floor_id}}@else Bulunamadı!@endif</td>
                 <td class="">{{$user->study_room}}</td>
                 <td class="">@if($user->rank == 300) Öğrenci @endif @if($user->rank == 200) Öğretmen @endif @if($user->rank == 100) Yönetici @endif @if($user->rank == 0) Geliştirici @endif</td>
                 <td class="text-blue-900 hover:text-blue-600"><a class="text-blue-900 hover:text-blue-600" href="{{route("admin.home")}}?user_id={{$user->id}}">Raporu İncele</a></td>

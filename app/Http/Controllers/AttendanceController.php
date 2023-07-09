@@ -28,9 +28,16 @@ class AttendanceController extends Controller
         } elseif ($floor && !$prayer_type) {
             $prayer_types = [["id" => 1, "name" => "Sabah Namazı"], ["id" => 2, "name" => "Öğle Namazı"], ["id" => 3, "name" => "İkindi Namazı"], ["id" => 4, "name" => "Akşam Namazı"], ["id" => 5, "name" => "Yatsı Namazı"]];
         } elseif ($floor && $prayer_type) {
-            $users = User::where('floor_id', $floor)->get();
-            foreach ($users as $user) {
-                $user->attendance = Attendance::where('user_id', $user->id)->where('created_at', '>=', date('Y-m-d 00:00:00'))->where('created_at', '<=', date('Y-m-d 23:59:59'))->where('prayer_type', $prayer_type)->first();
+//            $users = User::where('floor_id', $floor)->get();
+            $users = User::all();
+
+            foreach ($users as $key => $user) {
+                if (Room::where("id", $user->room)->first()->floor_id == $floor) {
+                    $user->attendance = Attendance::where('user_id', $user->id)->where('created_at', '>=', date('Y-m-d 00:00:00'))->where('created_at', '<=', date('Y-m-d 23:59:59'))->where('prayer_type', $prayer_type)->first();
+                } else {
+                    $user->attendance = null;
+                    unset($users[$key]);
+                }
             }
         }
 
@@ -54,13 +61,6 @@ class AttendanceController extends Controller
                 $attendance->prayer_type = $request->prayer_type;
                 $attendance->save();
             }
-
-
-//                $attendance = new Attendance();
-//                $attendance->user_id = $user_id;
-//                $attendance->attendance_type = "prayer";
-//                $attendance->prayer_type = $request->prayer_type;
-//                $attendance->save();
         }
 
         return view('attendance.prayer', ['floors' => $floors, 'users' => $users, 'floor' => $floor, 'prayer_type' => $prayer_type, 'prayer_types' => $prayer_types]);
