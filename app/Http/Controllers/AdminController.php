@@ -13,15 +13,18 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
+        $users = [];
+        if (auth()->user()->rank != 200 && auth()->user()->rank != 100 && auth()->user()->rank != 0) {
             return redirect()->route('reports');
         }
         $user_id = request()->query('user_id');
 
         if ($user_id)
             $user = User::find($user_id);
-        else
+        else {
             $user = null;
+            $users = User::where('rank', ">=", 300)->get();
+        }
         if ($user)
             $attendances = Attendance::where('user_id', $user->id)->where('created_at', '>=', date('Y-m-d 00:00:00'))->where('created_at', '<=', date('Y-m-d 23:59:59'))->get();
         else
@@ -52,13 +55,18 @@ class AdminController extends Controller
                 $attendances[] = $attendance_old->created_at->format('Y-m-d');
             }
         }
+        if ($request->date) {
+            $date = $request->date;
+        } else {
+            $date = date("Y-m-d", strtotime('-1 day'));
+        }
 
-        return view('admin.home', ['attendances' => $attendances, 'dates' => $dates, 'slug' => $slug, 'user_id' => $user_id, 'user' => $user]);
+        return view('admin.home', ['attendances' => $attendances, 'dates' => $dates, 'slug' => $slug, 'user_id' => $user_id, 'user' => $user, 'users' => $users, "time" => $date]);
     }
 
     public function users()
     {
-        if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
+        if (auth()->user()->rank != 200 && auth()->user()->rank != 100 && auth()->user()->rank != 0) {
             return redirect()->route('reports');
         }
 
@@ -72,6 +80,8 @@ class AdminController extends Controller
         if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
             return redirect()->route('reports');
         }
+        $rooms = Room::all();
+        $study_rooms = StudyRooms::all();
         if (!$user_id) {
             echo "<a href='" . route("admin.users") . "'>Gerİ Dön</a>";
             return abort(403, "Kullanıcı ID'si belirtilmedi.");
@@ -82,14 +92,13 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->username = $request->username;
             $user->room = $request->room;
-            $user->floor_id = $request->floor;
             $user->study_room = $request->study_room;
             $user->rank = $request->rank;
             $user->save();
             return redirect()->route('admin.users');
         }
 
-        return view('admin.edit_user', ["user" => $user]);
+        return view('admin.edit_user', ["user" => $user, "rooms" => $rooms, "study_rooms" => $study_rooms]);
     }
 
     public function add_user(Request $request)
@@ -97,6 +106,9 @@ class AdminController extends Controller
         if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
             return redirect()->route('reports');
         }
+        $rooms = Room::all();
+        $study_rooms = StudyRooms::all();
+        $floors = Floor::all();
 
         if ($request->name) {
             if (User::where('username', $request->username)->first()) {
@@ -117,7 +129,6 @@ class AdminController extends Controller
             $user->name = $request->name;
             $user->username = $request->username;
             $user->room = $request->room;
-            $user->floor_id = $floor_id;
             $user->study_room = $request->study_room;
             $user->rank = $request->rank;
             $user->password = bcrypt($password);
@@ -126,21 +137,24 @@ class AdminController extends Controller
             return redirect()->route('admin.users');
         }
 
-        return view('admin.add_user', []);
+        return view('admin.add_user', ['rooms' => $rooms, 'floors' => $floors, 'study_rooms' => $study_rooms]);
     }
 
     public function delete_user(Request $request, $user_id)
     {
-        if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
+        if (auth()->user()->rank > 100) {
             return redirect()->route('reports');
         }
 
-        $delete = User::find($user_id)->delete();
+        $delete = User::find($user_id);
+
         if ($delete) {
-            return redirect()->route('admin.users');
-        } else {
-            return abort(403, "Kullanıcı silinemedi.");
+            $delete->delete();    
+        }else {
+            return abort(403, "Kullanıcı bulunamadı.");
         }
+
+        
     }
 
     public function rooms(Request $request)
@@ -362,12 +376,65 @@ class AdminController extends Controller
         }
     }
 
-    public function settings()
+    public function settings(Request $request)
     {
         if (auth()->user()->rank != 100 && auth()->user()->rank != 0) {
             return redirect()->route('reports');
         }
+        $announcement = \App\Models\Data::first();
+        if ($request->announcement) {
+            $announcement->title = $request->title;
+            $announcement->announcement = $request->announcement;
+            $announcement->save();
+            return redirect()->route('admin.settings');
+        }
 
-        return view('admin.settings', []);
+        return view('admin.settings', ["announcement" => $announcement]);
+    }
+
+    public function get_excel(Request $request)
+    {
+        if (auth()->user()->rank != 200 && auth()->user()->rank != 100 && auth()->user()->rank != 0) {
+            return redirect()->route('reports');
+        }
+
+        if ($request->date) {
+            $date = $request->date;
+        } else {
+            $date = date("Y-m-d", strtotime('-1 day'));
+        }
+
+//        $attendances = Attendance::where('created_at', '>=', $date . " 00:00:00")->where('created_at', '<=', $date . " 23:59:59")->get();
+        $users = User::where('rank', '>=', 300)->get()->sortBy('room');
+        foreach ($users as $user) {
+            $attendances = Attendance::where('user_id', $user->id)->where('created_at', '>=', $date . " 00:00:00")->where('created_at', '<=', $date . " 23:59:59")->get();
+
+            foreach ($attendances as $attendance) {
+                if ($attendance->attendance_type == "prayer" && $attendance->prayer_type == 1) {
+                    $user->prayer1 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "prayer" && $attendance->prayer_type == 2) {
+                    $user->prayer2 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "prayer" && $attendance->prayer_type == 3) {
+                    $user->prayer3 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "prayer" && $attendance->prayer_type == 4) {
+                    $user->prayer4 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "prayer" && $attendance->prayer_type == 5) {
+                    $user->prayer5 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "study" && $attendance->study_type == 1) {
+                    $user->study1 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "study" && $attendance->study_type == 2) {
+                    $user->study2 = $attendance->created_at->format('H:i:s');
+                } elseif ($attendance->attendance_type == "sleep") {
+                    $user->sleep = $attendance->created_at->format('H:i:s');
+                }
+            }
+        }
+
+        $rooms_new = [];
+        foreach ($users as $user) {
+            $rooms_new[$user->room][] = $user;
+        }
+
+        return view('admin.get_excel', ["users" => $rooms_new, "time" => $date]);
     }
 }

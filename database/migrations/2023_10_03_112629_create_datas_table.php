@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('datas', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->string('attendance_type');
-            $table->string('study_type')->nullable();
-            $table->string('prayer_type')->nullable();
+            $table->longText("title")->nullable();
+            $table->longText("announcement")->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('datas');
     }
 };

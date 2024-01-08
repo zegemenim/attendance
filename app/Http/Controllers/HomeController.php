@@ -40,9 +40,9 @@ class HomeController extends Controller
                 $attendances[] = [$attendance_old->prayer_type, $attendance_old->created_at->format('Y-m-d')];
             }
         } elseif ($slug == "study") {
-            $attendances_old = Attendance::where('user_id', $user_id)->where('attendance_type', 'study')->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))->get("created_at");
+            $attendances_old = Attendance::where('user_id', $user_id)->where('attendance_type', 'study')->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))->get();
             foreach ($attendances_old as $attendance_old) {
-                $attendances[] = $attendance_old->created_at->format('Y-m-d');
+                $attendances[] = [$attendance_old->study_type, $attendance_old->created_at->format('Y-m-d')];
             }
         } elseif ($slug == "sleep") {
             $attendances_old = Attendance::where('user_id', $user_id)->where('attendance_type', 'sleep')->where('created_at', '>=', date('Y-m-d', strtotime("-30 days")))->get("created_at");
