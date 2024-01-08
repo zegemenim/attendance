@@ -1,7 +1,7 @@
 @include("components.admin_header")
 <a href="{{route("admin.add_user")}}" class="bg-gray-50 shadow-lg border-2 border-blue-900 rounded-md p-1 hover:bg-blue-500 mx-2 mt-4 hover:text-white">Yeni Kullanıcı</a>
-<main class="h-auto text-center w-full rounded-md p-4 bg-gray-50">
-    <table id="myTable" class="text-center hover">
+<main class="h-auto text-center w-full rounded-md p-4 bg-gray-50 overflow-x-auto">
+    <table id="myTable" class="text-center hover overscroll-x-auto">
         <thead>
         <tr>
             <th>#</th>
@@ -39,6 +39,7 @@
 <script>
     $(document).ready(function () {
         $('#myTable').DataTable({
+            lengthMenu: [200, 500, 1000, 2000],
             language: {
                 "emptyTable": "Tabloda herhangi bir veri mevcut değil",
                 "info": "_TOTAL_ kayıttan _START_ - _END_ arasındaki kayıtlar gösteriliyor",

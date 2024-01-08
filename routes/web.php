@@ -15,15 +15,18 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/zegemenim', function () {
+    return view('zegemenim');
+});
 
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/prayer-attendance/{floor?}/{prayer_type?}', 'AttendanceController@prayer')->name('attendance.prayer');
     Route::post('/prayer-attendance/{floor?}/{prayer_type?}', 'AttendanceController@prayer')->name('attendance.prayer.post');
-    Route::get('/study-attendance/{study_room?}', 'AttendanceController@study')->name('attendance.study');
-    Route::post('/study-attendance/{study_room?}', 'AttendanceController@study')->name('attendance.study.post');
-    Route::get('/sleep-attendance/{floor?}/{room?}', 'AttendanceController@sleep')->name('attendance.sleep');
-    Route::post('/sleep-attendance/{floor?}/{room?}', 'AttendanceController@sleep')->name('attendance.sleep.post');
+    Route::get('/study-attendance/{study_type?}/{study_room?}', 'AttendanceController@study')->name('attendance.study');
+    Route::post('/study-attendance/{study_type?}/{study_room?}', 'AttendanceController@study')->name('attendance.study.post');
+    Route::get('/sleep-attendance/{floor?}', 'AttendanceController@sleep')->name('attendance.sleep');
+    Route::post('/sleep-attendance/{floor?}', 'AttendanceController@sleep')->name('attendance.sleep.post');
 
     Route::get('/admin/', 'AdminController@index')->name('admin.home');
     Route::get('/admin/users', 'AdminController@users')->name('admin.users');
@@ -54,12 +57,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/delete_study_room/{study_room_id?}', 'AdminController@delete_study_room')->name('admin.delete_study_room');
     Route::post('/admin/delete_study_room/{study_room_id?}', 'AdminController@delete_study_room')->name('admin.delete_study_room.post');
     Route::get('/admin/settings', 'AdminController@settings')->name('admin.settings');
+    Route::post('/admin/settings', 'AdminController@settings')->name('admin.settings');
     Route::get('/admin/delete_attendances', 'DeleteController@attendances')->name('admin.delete_attendances');
     Route::get('/admin/delete_floors', 'DeleteController@floors')->name('admin.delete_floors');
     Route::get('/admin/delete_rooms', 'DeleteController@rooms')->name('admin.delete_rooms');
     Route::get('/admin/delete_study_rooms', 'DeleteController@study_rooms')->name('admin.delete_study_rooms');
     Route::get('/admin/delete_users', 'DeleteController@users')->name('admin.delete_users');
     Route::get('/admin/delete_sessions', 'DeleteController@sessions')->name('admin.delete_sessions');
+
+    Route::get('/admin/get-excel', 'AdminController@get_excel')->name('admin.get_excel');
 });
 
 Route::group(['middleware' => 'auth'], function () {

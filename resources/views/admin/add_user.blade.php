@@ -20,15 +20,21 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="room">Oda</label>
-                <input name="room" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="room" type="text" placeholder="Oda">
+                <select name="room" id="room"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach($rooms as $room)
+                        <option value="{{$room->id}}">{{$room->id}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="study_room">Çalışma Odası</label>
-                <input name="study_room"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="study_room" type="text" placeholder="Çalışma Odası">
+                <select name="study_room" id="study_room"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach($study_rooms as $study_room)
+                        <option value="{{$study_room->id}}">{{$study_room->id}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Şifre</label>

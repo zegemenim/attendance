@@ -26,21 +26,21 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="room">Oda</label>
-                <input value="{{$user->room}}" name="room"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="room" type="text" placeholder="Oda">
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="floor">Kat</label>
-                <input value="{{$user->floor_id}}" name="floor"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="floor" type="text" placeholder="Kat">
+                <select name="room" id="room"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach($rooms as $room)
+                        <option value="{{$room->id}}" @if($user->room == $room->id) selected @endif>{{$room->id}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="study_room">Çalışma Odası</label>
-                <input value="{{$user->study_room}}" name="study_room"
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       id="study_room" type="text" placeholder="Çalışma Odası">
+                <select name="study_room" id="study_room"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    @foreach($study_rooms as $study_room)
+                        <option value="{{$study_room->id}}" @if($user->study_room == $study_room->id) selected @endif>{{$study_room->id}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="rank">Seviye</label>
